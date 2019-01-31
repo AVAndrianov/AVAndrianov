@@ -17,7 +17,8 @@ public class Main {
         String minSum = "100";
         System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/geckodriver");
         WebDriver driver = new FirefoxDriver();
-
+        WindowsTab windowsTab = new WindowsTab();
+        windowsTab.setMainWindowHandle(driver);
         driver.get("http://zakupki.gov.ru/");
         driver.findElement(By.cssSelector("button.search__btn")).click();
         driver.manage().timeouts().implicitlyWait(5000, TimeUnit.SECONDS);
@@ -66,7 +67,6 @@ public class Main {
 
         ((JavascriptExecutor) driver).executeScript("document.getElementById('1').click()");
 
-
         driver.findElement(By.cssSelector("span.bigOrangeBtn.searchBtn")).click();
         Set<WebElement> webElementHashSet = new HashSet<WebElement>();
         LinkedList<WebElement> linkList;
@@ -104,12 +104,16 @@ public class Main {
 //                    linkList.addAll(driver.findElements(By.cssSelector("dd > strong")));
 //            webElementHashSet.addAll(driver.findElements(By.cssSelector("dd > strong")));
                 i++;
-                WebElement w;
+                WebElement sum;
+                WebElement info;
                 for (int j = 0; j < driver.findElements(By.cssSelector("dd > strong")).size(); j++) {
-                    w = driver.findElements(By.cssSelector("dd > strong")).get(j);
-                    byte[] buffer = (w.getText() + System.lineSeparator()).getBytes();
+                    sum = driver.findElements(By.cssSelector("dd > strong")).get(j);
+                    byte[] buffer = (sum.getText() + System.lineSeparator()).getBytes();
                     fos.write(buffer, 0, buffer.length);
-                    System.out.println(w.getText());
+
+                    driver.findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.reportBox > ul > ul > li:nth-child(1) > a")).click();
+//                    System.out.println((String) driver.findElement(By.cssSelector("body > div.cardWrapper > div > div > script:nth-child(1)\n")).getAttribute("type"));
+                    System.out.println(sum.getText());
                 }
 //                for (WebElement w : driver.findElements(By.cssSelector("dd > strong"))) {
 //                    byte[] buffer = (w.getText() + System.lineSeparator()).getBytes();
