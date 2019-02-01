@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import settings.FfoxDriver;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,124 +18,116 @@ public class MainClassTask2 {
     private String name = "НИОКР";
     private String maxSum = "300000000";
     private String minSum = "100";
+    private WindowsTab windowsTab;
+    private SearchSettings searchSettings;
 
     public MainClassTask2() {
         super();
-
-        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/geckodriver");
-        driver = new org.openqa.selenium.firefox.FirefoxDriver();
-        WindowsTab windowsTab = new WindowsTab();
-        windowsTab.setMainWindowHandle(driver);
-        driver.get("http://zakupki.gov.ru/");
-        driver.findElement(By.cssSelector("button.search__btn")).
-
-                click();
-        driver.manage().
-
+        driver = new FfoxDriver().getDriver();
+        searchSettings = new SearchSettings();
+        windowsTab = new WindowsTab();
+        windowsTab.
+                setMainWindowHandle(driver);
+        driver.
+                get("http://zakupki.gov.ru/");
+        driver.
+                manage().
                 timeouts().
-
-                implicitlyWait(5000, TimeUnit.SECONDS);
-        driver.manage().
-
+                implicitlyWait(50, TimeUnit.SECONDS);
+        driver.
+                manage().
                 timeouts().
-
-                pageLoadTimeout(5000, TimeUnit.SECONDS);
-        driver.manage().
-
+                pageLoadTimeout(50, TimeUnit.SECONDS);
+        driver.
+                manage().
                 timeouts().
+                setScriptTimeout(50, TimeUnit.SECONDS);
 
-                setScriptTimeout(5000, TimeUnit.SECONDS);
-
-        driver.findElement(By.cssSelector("a.extendedSearchLink.floatRight")).
-
+        driver.
+                findElement(By.cssSelector("button.search__btn")).
                 click();
-
-
-        WebElement minSumField = driver.findElement(By.cssSelector("#priceFromGeneral"));
-        for (
-                int i = 0; i < minSum.length(); i++) {
-            minSumField.sendKeys(String.valueOf(minSum.charAt(i)));
-        }
-
-        WebElement maxSumField = driver.findElement(By.cssSelector("#priceToGeneral"));
-        for (
-                int i = 0; i < maxSum.length(); i++) {
-            maxSumField.sendKeys(String.valueOf(maxSum.charAt(i)));
-        }
-
-        WebElement mainField = driver.findElement(By.cssSelector("#searchString.autocompleteOrder.hint.clearValue.withoutAutocomplete"));
-        mainField.clear();
-        for (
-                int i = 0; i < name.length(); i++) {
-            mainField.sendKeys(String.valueOf(name.charAt(i)));
-        }
-        driver.findElement(By.xpath("//li[@id='placingWaysTag']/div/div/span")).
-
+        driver.
+                findElement(By.cssSelector("a.extendedSearchLink.floatRight")).
                 click();
-
+        //Заполнение поля максимальная сумма
+        searchSettings.
+                fillInputField(driver,
+                        By.cssSelector("#priceToGeneral"), maxSum);
+        //Заполнение поля минимальная сумма
+        searchSettings.
+                fillInputField(driver,
+                        By.cssSelector("#priceFromGeneral"), minSum);
+        //Заполнение поля Закупки
+        searchSettings.
+                fillInputField(driver,
+                        By.cssSelector("#searchString.autocompleteOrder" +
+                                ".hint.clearValue.withoutAutocomplete"), name);
+        //Выбор валюты
+        driver.findElement(By.cssSelector("div.pseudoSelect.greyText")).
+                click();
 
         ((JavascriptExecutor) driver).
+                executeScript("document.getElementById('1').click()");
+        //Способ определения поставщика, подрядной организации
+        driver.
+                findElement(By.xpath("//li[@id='placingWaysTag']/div/div/span")).
+                click();
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_ZKKD44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_KESMBO').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OKD504').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_ZKKU44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_ZKK44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OK').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OK44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OKD44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OKU44').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_OK504').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWay_SZ').click()");
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('placingWaysSelectBtn').click()");
+
+        //Этап закупки:
 //        driver.findElement(By.xpath("//li[@id='orderStages']/div/div/span")).click();
 //        ((JavascriptExecutor)driver).executeScript("document.getElementById('ca').click()");
 //        ((JavascriptExecutor)driver).executeScript("document.getElementById('pc').click()");
 //        ((JavascriptExecutor)driver).executeScript("document.getElementById('pa').click()");
 //        ((JavascriptExecutor)driver).executeScript("document.getElementById('orderStagesSelectBtn')" +
 //                ".getElementsByClassName('btnBtn blueBtn')[0].click()");
-        driver.findElement(By.cssSelector("div.pseudoSelect.greyText")).
 
-                click();
-
-        ((JavascriptExecutor) driver).
-
-                executeScript("document.getElementById('1').click()");
-
+        //Кнопка Найти
         driver.findElement(By.cssSelector("span.bigOrangeBtn.searchBtn")).
-
                 click();
 
         Set<WebElement> webElementHashSet = new HashSet<WebElement>();
         LinkedList<WebElement> linkList;
 
         driver.findElement(By.cssSelector("li.pageSelect")).
-
                 click();
-        ((JavascriptExecutor) driver).
 
+        ((JavascriptExecutor) driver).
                 executeScript("document.getElementById('_10').click()");
 
         try {
@@ -146,10 +139,12 @@ public class MainClassTask2 {
 
         int pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 " +
                 "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                "> div.paginator.greyBox > ul.pages > li.page")).size();
+                "> div.paginator.greyBox > ul.pages > li.page")).
+                size();
         String numberOfPages = driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
                 "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                "> div.paginator.greyBox > ul.pages > li:nth-child(" + pageNumber + ") > a")).getAttribute("data-pagenumber");
+                "> div.paginator.greyBox > ul.pages > li:nth-child(" + pageNumber + ") > a")).
+                getAttribute("data-pagenumber");
         System.out.println(pageNumber);
         System.out.println(numberOfPages);
         int pageNumber2 = Integer.parseInt(numberOfPages);

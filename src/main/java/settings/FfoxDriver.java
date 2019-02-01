@@ -1,3 +1,5 @@
+package settings;
+
 import org.openqa.selenium.WebDriver;
 
 public class FfoxDriver {

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import settings.FfoxDriver;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,8 +14,7 @@ public class MainClassTask1 {
     private String first_title;
 
     public MainClassTask1() {
-        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/geckodriver");
-        driver = new org.openqa.selenium.firefox.FirefoxDriver();
+        driver = new FfoxDriver().getDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://gossluzhba.gov.ru/");
         main_title = "Госслужба";
@@ -31,7 +31,7 @@ public class MainClassTask1 {
                     "> li:nth-child(3) > a")).click();
 
             checkPageCorrect(driver, first_title);
-            
+
             if (waitElement(driver, By.cssSelector("body > div.container " +
                     "> div:nth-child(4) > div.col-xs-8 > a:nth-child(1) " +
                     "> div > p.title"), 10)) {
