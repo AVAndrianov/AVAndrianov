@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="api-inquiry" target="7" />
+      <module name="api-inquiry" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
