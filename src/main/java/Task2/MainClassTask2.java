@@ -191,7 +191,7 @@ public class MainClassTask2 {
                             window(windowsTab.getMainWindowHandle());
 
                     String URL = driver.
-                            findElement(By.cssSelector("div:nth-child(3) > div.boxIcons " +
+                            findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.boxIcons " +
                                     "> a.cryptoSignLink.externalSignLink.pWidth_840.linkPopUp")).getAttribute("href");
                     windowsTab.setOldWindowsSet(driver);
                     ((JavascriptExecutor) driver).executeScript("window.open()");
