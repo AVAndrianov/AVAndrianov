@@ -178,6 +178,7 @@ public class MainClassTask2 {
                                     "> div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
                                     "> div.noticeTabBox.padBtm20 > div:nth-child(10) > table > tbody " +
                                     "> tr:nth-child(1) > td:nth-child(2)")).getText();
+                    driver.close();
                     driver.
                             switchTo().
                             window(windowsTab.getMainWindowHandle());
@@ -193,7 +194,10 @@ public class MainClassTask2 {
             }
         } catch (
                 IOException ex) {
+
             System.out.println(ex.getMessage());
+        }finally {
+            driver.close();
         }
     }
 }

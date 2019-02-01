@@ -40,7 +40,7 @@ public class MainClassTask1 {
                         "> div > p.title")).click();
             }
         }
-
+        driver.close();
     }
 
     private static Boolean waitElement(WebDriver driver, By by, int timeOutInSeconds) {
