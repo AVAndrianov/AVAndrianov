@@ -108,12 +108,17 @@ public class Main {
                 WebElement info;
                 for (int j = 0; j < driver.findElements(By.cssSelector("dd > strong")).size(); j++) {
                     sum = driver.findElements(By.cssSelector("dd > strong")).get(j);
-                    byte[] buffer = (sum.getText() + System.lineSeparator()).getBytes();
+
+                    windowsTab.setOldWindowsSet(driver);
+                    driver.findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.reportBox > ul > ul > li:nth-child(1) > a")).click();
+                    driver.switchTo().window(windowsTab.getNewWindowHandle(driver));
+                    String nameOfPurchase = driver.findElement(By.cssSelector("body > div.cardWrapper > div > div > div.cardWrapper > div > div > div.contentTabBoxBlock > div.noticeTabBox.padBtm20 > div:nth-child(2) > table > tbody > tr:nth-child(4) > td:nth-child(2)\n")).getText();
+                    driver.switchTo().window(windowsTab.getMainWindowHandle());
+
+                    byte[] buffer = (sum.getText() + System.lineSeparator() + nameOfPurchase + System.lineSeparator()).getBytes();
                     fos.write(buffer, 0, buffer.length);
 
-                    driver.findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.reportBox > ul > ul > li:nth-child(1) > a")).click();
-//                    System.out.println((String) driver.findElement(By.cssSelector("body > div.cardWrapper > div > div > script:nth-child(1)\n")).getAttribute("type"));
-                    System.out.println(sum.getText());
+//                    System.out.println(sum.getText());
                 }
 //                for (WebElement w : driver.findElements(By.cssSelector("dd > strong"))) {
 //                    byte[] buffer = (w.getText() + System.lineSeparator()).getBytes();
