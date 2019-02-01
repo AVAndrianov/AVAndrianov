@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import settings.FfoxDriver;
 
 import java.io.FileOutputStream;
@@ -17,12 +19,15 @@ public class MainClassTask2 {
     private String minSum = "100";
     private WindowsTab windowsTab;
     private SearchSettings searchSettings;
+    private WebDriverWait wait;
 
     public MainClassTask2() {
         super();
         driver = new FfoxDriver().getDriver();
         searchSettings = new SearchSettings();
         windowsTab = new WindowsTab();
+        wait = new WebDriverWait(driver, 1);
+
         windowsTab.
                 setMainWindowHandle(driver);
         driver.
@@ -30,15 +35,15 @@ public class MainClassTask2 {
         driver.
                 manage().
                 timeouts().
-                implicitlyWait(50, TimeUnit.SECONDS);
+                implicitlyWait(10, TimeUnit.SECONDS);
         driver.
                 manage().
                 timeouts().
-                pageLoadTimeout(50, TimeUnit.SECONDS);
+                pageLoadTimeout(10, TimeUnit.SECONDS);
         driver.
                 manage().
                 timeouts().
-                setScriptTimeout(50, TimeUnit.SECONDS);
+                setScriptTimeout(10, TimeUnit.SECONDS);
 
         driver.
                 findElement(By.cssSelector("button.search__btn")).
@@ -118,11 +123,11 @@ public class MainClassTask2 {
         driver.findElement(By.cssSelector("span.bigOrangeBtn.searchBtn")).
                 click();
 
-        //Переключение количества выводимых на экран позиций
+        //Переключение количества выводимых позиций на одной странице
         driver.findElement(By.cssSelector("li.pageSelect")).
                 click();
         ((JavascriptExecutor) driver).
-                executeScript("document.getElementById('_10').click()");
+                executeScript("document.getElementById('_50').click()");
         //Руки еще не дошли сделать нормальную проверку и ожидание
         try {
             Thread.sleep(2000);
@@ -131,16 +136,29 @@ public class MainClassTask2 {
             e.printStackTrace();
         }
         //Опредеояю количество страниц
-        int pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 " +
-                "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                "> div.paginator.greyBox > ul.pages > li.page")).
-                size();
-        String numberOfPages = driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
-                "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                "> div.paginator.greyBox > ul.pages > li:nth-child(" + pageNumber + ") > a")).
-                getAttribute("data-pagenumber");
-        int pageNumber2 = Integer.parseInt(numberOfPages);
+        int pageNumber2;
+        int pageNumber = 1;
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("body > div.parametrs.margBtm10 " +
+                    "> div.paginator.greyBox.extendedVariant.margBtm20 " +
+                    "> div.paginator.greyBox > ul.pages > li.page")));
+        } catch (Exception e) {
+            pageNumber = 0;
+        }
 
+        if (pageNumber != 0) {
+            pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 " +
+                    "> div.paginator.greyBox.extendedVariant.margBtm20 " +
+                    "> div.paginator.greyBox > ul.pages > li.page")).
+                    size();
+            String numberOfPages = driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
+                    "> div.paginator.greyBox.extendedVariant.margBtm20 " +
+                    "> div.paginator.greyBox > ul.pages > li:nth-child(" + pageNumber + ") > a")).
+                    getAttribute("data-pagenumber");
+            pageNumber2 = Integer.parseInt(numberOfPages);
+        } else {
+            pageNumber2 = 1;
+        }
         try (
                 FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/notes.txt")) {
             int i = 1;
@@ -153,13 +171,13 @@ public class MainClassTask2 {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
-                        "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                        "> div.paginator.greyBox > ul > li:nth-child(" + i + ")")).click();
+                if (pageNumber2 != 1)
+                    driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
+                            "> div.paginator.greyBox.extendedVariant.margBtm20 " +
+                            "> div.paginator.greyBox > ul > li:nth-child(" + i + ")")).click();
                 i++;
 
                 WebElement sum;
-                WebElement info;
                 String nameOfPurchase;
                 String applicationDeadline;
                 String contactPerson;
@@ -207,9 +225,9 @@ public class MainClassTask2 {
                     driver.
                             switchTo().
                             window(windowsTab.getMainWindowHandle());
-                    byte[] buffer = (sum.getText()
+                    byte[] buffer = (nameOfPurchase
                             + System.lineSeparator()
-                            + nameOfPurchase
+                            + sum.getText()
                             + System.lineSeparator()
                             + applicationDeadline
                             + System.lineSeparator()
