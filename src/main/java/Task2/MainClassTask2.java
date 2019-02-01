@@ -157,10 +157,13 @@ public class MainClassTask2 {
                         "> div.paginator.greyBox.extendedVariant.margBtm20 " +
                         "> div.paginator.greyBox > ul > li:nth-child(" + i + ")")).click();
                 i++;
+
                 WebElement sum;
                 WebElement info;
                 String nameOfPurchase;
                 String applicationDeadline;
+                String contactPerson;
+                String electronicSignature;
                 for (int j = 0; j < driver.findElements(By.cssSelector("dd > strong")).size(); j++) {
                     sum = driver.findElements(By.cssSelector("dd > strong")).get(j);
                     windowsTab.setOldWindowsSet(driver);
@@ -178,6 +181,28 @@ public class MainClassTask2 {
                                     "> div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
                                     "> div.noticeTabBox.padBtm20 > div:nth-child(10) > table > tbody " +
                                     "> tr:nth-child(1) > td:nth-child(2)")).getText();
+                    contactPerson = driver.findElement(By.cssSelector("body > div.cardWrapper > div " +
+                            "> div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
+                            "> div.noticeTabBox.padBtm20 > div:nth-child(6) > table > tbody " +
+                            "> tr:nth-child(2) > td:nth-child(2)")).getText();
+                    driver.close();
+                    driver.
+                            switchTo().
+                            window(windowsTab.getMainWindowHandle());
+
+                    String URL = driver.
+                            findElement(By.cssSelector("div:nth-child(3) > div.boxIcons " +
+                                    "> a.cryptoSignLink.externalSignLink.pWidth_840.linkPopUp")).getAttribute("href");
+                    windowsTab.setOldWindowsSet(driver);
+                    ((JavascriptExecutor) driver).executeScript("window.open()");
+                    driver.switchTo().window(windowsTab.getNewWindowHandle(driver));
+                    driver.get(URL);
+                    driver.
+                            findElement(By.cssSelector("body > div.modal > div " +
+                                    "> div.addingTbl.expandTbl.elSignBlock > table " +
+                                    "> tbody > tr.rowExpand > td:nth-child(1) > span")).click();
+                    electronicSignature = driver.
+                            findElement(By.cssSelector("tr.toggleTr.expandRow > td > div")).getText();
                     driver.close();
                     driver.
                             switchTo().
@@ -187,6 +212,11 @@ public class MainClassTask2 {
                             + nameOfPurchase
                             + System.lineSeparator()
                             + applicationDeadline
+                            + System.lineSeparator()
+                            + contactPerson
+                            + System.lineSeparator()
+                            + electronicSignature
+                            + System.lineSeparator()
                             + System.lineSeparator()).
                             getBytes();
                     fos.write(buffer, 0, buffer.length);
@@ -196,7 +226,7 @@ public class MainClassTask2 {
                 IOException ex) {
 
             System.out.println(ex.getMessage());
-        }finally {
+        } finally {
             driver.close();
         }
     }
