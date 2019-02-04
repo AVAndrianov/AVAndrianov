@@ -24,7 +24,7 @@ public class MainClassTask2 {
     public MainClassTask2() {
         super();
         driver = new FfoxDriver().getDriver();
-        searchSettings = new SearchSettings();
+        searchSettings = new SearchSettings(driver);
         windowsTab = new WindowsTab();
         wait = new WebDriverWait(driver, 1);
 
@@ -127,7 +127,7 @@ public class MainClassTask2 {
         driver.findElement(By.cssSelector("li.pageSelect")).
                 click();
         ((JavascriptExecutor) driver).
-                executeScript("document.getElementById('_50').click()");
+                executeScript("document.getElementById('_20').click()");
         //Руки еще не дошли сделать нормальную проверку и ожидание
         try {
             Thread.sleep(2000);
@@ -135,9 +135,10 @@ public class MainClassTask2 {
                 InterruptedException e) {
             e.printStackTrace();
         }
-        //Опредеояю количество страниц
         int pageNumber2;
         int pageNumber = 1;
+
+        //Если количество страниц, равно 0,ожидаем таймаут поиска элемента и выствляю pageNumber = 0
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("body > div.parametrs.margBtm10 " +
                     "> div.paginator.greyBox.extendedVariant.margBtm20 " +
@@ -146,6 +147,7 @@ public class MainClassTask2 {
             pageNumber = 0;
         }
 
+        //Опредеояю количество страниц
         if (pageNumber != 0) {
             pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 " +
                     "> div.paginator.greyBox.extendedVariant.margBtm20 " +
@@ -159,6 +161,7 @@ public class MainClassTask2 {
         } else {
             pageNumber2 = 1;
         }
+
         try (
                 FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/notes.txt")) {
             int i = 1;

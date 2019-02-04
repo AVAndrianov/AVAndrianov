@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class SearchSettings {
-    public SearchSettings() {
+    private WebDriver driver;
+
+    public SearchSettings(WebDriver driver) {
+        this.driver = driver;
     }
 
     public void fillInputField(WebDriver driver, By by, String text) {
