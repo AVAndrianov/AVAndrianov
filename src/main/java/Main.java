@@ -8,5 +8,7 @@ public class Main {
 
         MainClassTask2 task2 = new MainClassTask2();
 //        MainClassTask1 task1 = new MainClassTask1();
+        System.out.println("Hello Anton");
     }
+
 }
