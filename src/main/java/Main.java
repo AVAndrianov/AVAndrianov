@@ -11,6 +11,7 @@ public class Main {
         System.out.println("Hello Anton");
         //????
         System.out.println("Hello Vasya");
+        System.out.println("Hello Grigoriy");
     }
 
 }
