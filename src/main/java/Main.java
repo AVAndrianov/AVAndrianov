@@ -10,6 +10,14 @@ public class Main {
 //        MainClassTask1 task1 = new MainClassTask1();
         System.out.println("Hello Anton");
         //????
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
+        System.out.println("Hello Anton");
     }
 
 }
