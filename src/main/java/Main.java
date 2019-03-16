@@ -11,6 +11,9 @@ public class Main {
         //LLL
         //LLL
        C
+           
+            C
+            C
     }
 
 }
