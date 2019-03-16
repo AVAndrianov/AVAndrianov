@@ -27,6 +27,7 @@ public class Main {
         //        MainClassTask1 task1 = new MainClassTask1();
         //        MainClassTask1 task1 = new MainClassTask1();
         //        MainClassTask1 task1 = new MainClassTask1();
+        //        MainClassTask1 task1 = new MainClassTask1();
     }
 
 }
