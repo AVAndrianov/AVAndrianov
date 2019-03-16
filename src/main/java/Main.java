@@ -23,6 +23,10 @@ public class Main {
         System.out.println("Hello Anton");
         System.out.println("Hello Anton");
         System.out.println("Hello Anton");
+        //        MainClassTask1 task1 = new MainClassTask1();
+        //        MainClassTask1 task1 = new MainClassTask1();
+        //        MainClassTask1 task1 = new MainClassTask1();
+        //        MainClassTask1 task1 = new MainClassTask1();
     }
 
 }
